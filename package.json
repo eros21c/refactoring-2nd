@@ -1,0 +1,16 @@
+{
+  "name": "refactoring-2nd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es201": "^0.0.1-security",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  },
+  "scripts": {
+    "test": "mocha --watch --recursive --require babel-core/register"
+  }
+}
