@@ -1,12 +1,18 @@
 export {statement}
 
-
-
 function statement(invoice, plays) {
 
-    function amountFor(aPerformance, play) {
+    function usd(aNumber) {
+        return new Intl.NumberFormat("en-US",
+            {
+                style: "currency", currency: "USD",
+                minimumFractionDigits: 2
+            }).format(aNumber);
+    }
+
+    function amountFor(aPerformance) {
         let result = 0;
-        switch (play.type) {
+        switch (playFor(aPerformance).type) {
             case "tragedy":
                 result = 40000;
                 if (aPerformance.audience > 30) {
@@ -21,30 +27,32 @@ function statement(invoice, plays) {
                 result += 300 * aPerformance.audience;
                 break;
             default:
-                throw new Error(`알 수 없는 장르: ${play.type}`);
+                throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
         }
+        return result;
+    }
+
+    function playFor(aPerformance) {
+        return plays[aPerformance.playID];
+    }
+
+    function volumeCreditsFor(perf) {
+        let result = Math.max(perf.audience - 30, 0);
+        if ("comedy" === playFor(perf).type) result += Math.floor(perf.audience / 5);
         return result;
     }
 
     let totalAmount = 0;
     let volumeCredits = 0;
     let result = `청구 내역 (고객명: ${invoice.customer})\n`;
-    const format = new Intl.NumberFormat("en-US",
-        { style: "currency", currency: "USD",
-                  minimumFractionDigits: 2}).format;
 
     for (let perf of invoice.performances) {
-        const play = plays[perf.playID];
-        let thisAmount = amountFor(play, perf);
+        volumeCredits += volumeCreditsFor(perf);
 
-        volumeCredits += Math.max(perf.audience - 30, 0);
-
-        if ("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
-
-        result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience}석)\n`;
-        totalAmount += thisAmount;
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf)/100)} (${perf.audience}석)\n`;
+        totalAmount += amountFor(perf);
     }
-    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `총액: ${usd(totalAmount/100)}\n`;
     result += `적립 포인트: ${volumeCredits}점\n`;
     return result;
 }
