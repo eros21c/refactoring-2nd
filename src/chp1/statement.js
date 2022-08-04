@@ -7,7 +7,7 @@ function statement(invoice, plays) {
             {
                 style: "currency", currency: "USD",
                 minimumFractionDigits: 2
-            }).format(aNumber);
+            }).format(aNumber/100);
     }
 
     function amountFor(aPerformance) {
@@ -42,17 +42,29 @@ function statement(invoice, plays) {
         return result;
     }
 
-    let totalAmount = 0;
-    let volumeCredits = 0;
+    function totalAmount() {
+        let result = 0 ;
+        for (let perf of invoice.performances) {
+            result += amountFor(perf);
+        }
+        return result;
+    }
+
+    function totalVolumeCredits() {
+        let result = 0;
+        for (let perf of invoice.performances) {
+            result += volumeCreditsFor(perf);
+        }
+        return result;
+    }
+
     let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
     for (let perf of invoice.performances) {
-        volumeCredits += volumeCreditsFor(perf);
-
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf)/100)} (${perf.audience}석)\n`;
-        totalAmount += amountFor(perf);
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
     }
-    result += `총액: ${usd(totalAmount/100)}\n`;
-    result += `적립 포인트: ${volumeCredits}점\n`;
+
+    result += `총액: ${usd(totalAmount())}\n`;
+    result += `적립 포인트: ${totalVolumeCredits()}점\n`;
     return result;
 }
