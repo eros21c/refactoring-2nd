@@ -1,34 +1,35 @@
 import { expect } from 'chai';
 import {statement, htmlStatement} from '../../src/chp1/statement.js'
 
-describe('statement', () => {
-    let playsJson =
-        {
-            "hamlet": {"name": "Hamlet", "type": "tragedy"},
-            "as-like": {"name": "As You Like It", "type": "comedy"},
-            "othello": {"name": "Othello", "type": "tragedy"}
-        };
+let playsJson =
+    {
+        "hamlet": {"name": "Hamlet", "type": "tragedy"},
+        "as-like": {"name": "As You Like It", "type": "comedy"},
+        "othello": {"name": "Othello", "type": "tragedy"}
+    };
 
-    let  invoicesJson =
-        [
-            {
-                "customer": "BigCo",
-                "performances": [
-                    {
-                        "playID": "hamlet",
-                        "audience": 55
-                    },
-                    {
-                        "playID": "as-like",
-                        "audience": 35
-                    },
-                    {
-                        "playID": "othello",
-                        "audience": 40
-                    }
-                ]
-            }
-        ];
+let  invoicesJson =
+    [
+        {
+            "customer": "BigCo",
+            "performances": [
+                {
+                    "playID": "hamlet",
+                    "audience": 55
+                },
+                {
+                    "playID": "as-like",
+                    "audience": 35
+                },
+                {
+                    "playID": "othello",
+                    "audience": 40
+                }
+            ]
+        }
+    ];
+
+describe('statement', () => {
 
     it('should print a statement for multiple plays, single customer and multiple seats in plain text', () => {
         let expected = "청구 내역 (고객명: BigCo)\n" +
@@ -43,33 +44,6 @@ describe('statement', () => {
 });
 
 describe('htmlStatement', () => {
-    let playsJson =
-        {
-            "hamlet": {"name": "Hamlet", "type": "tragedy"},
-            "as-like": {"name": "As You Like It", "type": "comedy"},
-            "othello": {"name": "Othello", "type": "tragedy"}
-        };
-
-    let  invoicesJson =
-        [
-            {
-                "customer": "BigCo",
-                "performances": [
-                    {
-                        "playID": "hamlet",
-                        "audience": 55
-                    },
-                    {
-                        "playID": "as-like",
-                        "audience": 35
-                    },
-                    {
-                        "playID": "othello",
-                        "audience": 40
-                    }
-                ]
-            }
-        ];
 
     it('should print a htmlStatement for multiple plays, single customer and multiple seats in html', () => {
         let expected = "<h1>청구 내역 (고객명: BigCo)</h1>\n" +
