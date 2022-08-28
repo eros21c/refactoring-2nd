@@ -13,7 +13,7 @@ class PerformanceCalculator {
     }
 }
 
-class TrangedyCalculator extends PerformanceCalculator{
+class TragedyCalculator extends PerformanceCalculator{
 
     get amount() {
         let result = 40000;
@@ -41,7 +41,7 @@ class ComedyCalculator extends PerformanceCalculator {
 
 function createPerformanceCalculator(aPerformance, aPlay) {
     switch (aPlay.type) {
-        case "tragedy": return new TrangedyCalculator(aPerformance, aPlay);
+        case "tragedy": return new TragedyCalculator(aPerformance, aPlay);
         case "comedy": return new ComedyCalculator(aPerformance, aPlay);
         default: throw new Error(`알 수 없는 장르: ${this.play.type}`);
     }
